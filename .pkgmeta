@@ -1,0 +1,8 @@
+package-as: SilenceHorseman
+
+ignore:
+  - art
+  - tools
+  - README.md
+  - .gitignore
+  - CHANGELOG.md
