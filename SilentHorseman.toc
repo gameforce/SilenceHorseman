@@ -1,0 +1,8 @@
+## Interface: 20506
+## Title: Silent Horseman
+## Notes: Mute the Headless Horseman's voice lines and hide his chat yells. Each is a checkbox in the options.
+## Author: Gameforce
+## Version: 0.1
+## SavedVariables: SilentHorsemanDB
+
+SilentHorseman.lua
