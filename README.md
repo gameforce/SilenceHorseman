@@ -2,7 +2,7 @@
 
 ![Silence Horseman](art/icon-128.png)
 
-During Hallow's End the Shade of the Horseman yells in the zone every couple of minutes, and the Headless Horseman has plenty to say in the Scarlet Monastery. Silence Horseman turns them off, and each part is its own checkbox:
+During Hallow's End the Headless Horseman turns up in the starting zones, and his Shade yells across the whole zone every couple of minutes, on top of everything he says in the Scarlet Monastery. Silence Horseman silences him zone wide, not just in the dungeon, and each part is its own checkbox:
 
 - **Mute his voice lines**: silences the Horseman's voice files (50 of them), so his yells and boss lines make no sound.
 - **Hide his chat text**: removes his yells, says and emotes from every chat window.
