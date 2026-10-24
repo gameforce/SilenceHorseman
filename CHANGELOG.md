@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.1.1
+- First CurseForge release: project ID in the TOC and automatic packaging from tags. No change to behavior.
+
 ## 0.1.0
 - Mute the Headless Horseman's and the Shade of the Horseman's voice lines (50 voice files), as a checkbox.
 - Hide their yells, says and emotes from chat, as a checkbox.

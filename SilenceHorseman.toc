@@ -2,7 +2,7 @@
 ## Title: Silence Horseman
 ## Notes: Mute the Headless Horseman's voice lines and hide his chat yells during Hallow's End. Each is a checkbox.
 ## Author: Gameforce
-## Version: 0.1.0
+## Version: 0.1.1
 ## IconTexture: Interface\AddOns\SilenceHorseman\icon
 ## X-License: MIT
 ## X-Website: https://github.com/gameforce/SilenceHorseman
