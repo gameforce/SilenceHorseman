@@ -1,4 +1,4 @@
--- Silent Horseman: two independent options, mute the Headless Horseman's voice lines and hide his chat yells.
+-- Silent Horseman: two independent options, mute the Horseman's voice lines and hide his chat yells.
 -- /sh opens the options; /sh audio on|off and /sh chat on|off change them from chat.
 
 local ADDON = ...
@@ -18,7 +18,8 @@ local SOUND_IDS = {
     770243, 770245,
 }
 
-local SPEAKER = "Headless Horseman"
+-- Matches "Headless Horseman" and "Shade of the Horseman", the one that yells in the zone during Hallow's End.
+local SPEAKER = "Horseman"
 local CHAT_EVENTS = { "CHAT_MSG_MONSTER_YELL", "CHAT_MSG_MONSTER_SAY", "CHAT_MSG_MONSTER_EMOTE" }
 
 local function Print(msg)
