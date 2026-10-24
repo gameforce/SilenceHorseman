@@ -43,8 +43,12 @@ local function ApplyAudio()
 end
 
 ---------------------------------------------------------------- Chat
+local function IsHorseman(sender)
+    return type(sender) == "string" and sender:find(SPEAKER, 1, true) ~= nil
+end
+
 local function ChatFilter(_, _, _, sender)
-    if DB and DB.chat and type(sender) == "string" and sender:find(SPEAKER, 1, true) then
+    if DB and DB.chat and IsHorseman(sender) then
         return true
     end
 end
@@ -52,6 +56,25 @@ end
 for _, event in ipairs(CHAT_EVENTS) do
     ChatFrame_AddMessageEventFilter(event, ChatFilter)
 end
+
+-- /sh debug on: one line per NPC yell, say or emote (and boss emote) seen, so the real event name, the speaker's
+-- name, whether the filter hid it and the gap since that speaker's last line can be read even with the text hidden.
+local DEBUG_EVENTS = { "CHAT_MSG_MONSTER_YELL", "CHAT_MSG_MONSTER_SAY", "CHAT_MSG_MONSTER_EMOTE",
+    "CHAT_MSG_RAID_BOSS_EMOTE", "CHAT_MSG_RAID_BOSS_WHISPER" }
+local lastSeen = {}
+local debugFrame = CreateFrame("Frame")
+debugFrame:SetScript("OnEvent", function(_, event, text, sender)
+    if not (DB and DB.debug) then
+        return
+    end
+    local now = GetTime()
+    local who = tostring(sender)
+    local gap = lastSeen[who] and ("%d s since the last"):format(now - lastSeen[who]) or "first seen"
+    lastSeen[who] = now
+    local hidden = DB.chat and IsHorseman(sender)
+    Print(("%s from '%s' (%s, %s): %s"):format(event:gsub("^CHAT_MSG_", ""), who, hidden and "hidden" or "shown", gap,
+        tostring(text):sub(1, 50)))
+end)
 
 ---------------------------------------------------------------- Options
 local panel = CreateFrame("Frame")
@@ -105,14 +128,14 @@ end
 
 ---------------------------------------------------------------- Slash command
 local function Status()
-    Print(("voice lines %s, chat text %s. /sh audio on|off, /sh chat on|off, /sh opens the options."):format(
-        DB.audio and "muted" or "audible", DB.chat and "hidden" or "shown"))
+    Print(("voice lines %s, chat text %s, debug %s. /sh audio on|off, /sh chat on|off, /sh debug on|off, /sh opens the options."):format(
+        DB.audio and "muted" or "audible", DB.chat and "hidden" or "shown", DB.debug and "on" or "off"))
 end
 
 SLASH_SILENTHORSEMAN1, SLASH_SILENTHORSEMAN2 = "/sh", "/silenthorseman"
 SlashCmdList.SILENTHORSEMAN = function(msg)
     local key, arg = strsplit(" ", strlower(strtrim(msg or "")))
-    if (key == "audio" or key == "chat") and (arg == "on" or arg == "off") then
+    if (key == "audio" or key == "chat" or key == "debug") and (arg == "on" or arg == "off") then
         DB[key] = arg == "on"
         ApplyAudio()
         Status()
@@ -132,5 +155,8 @@ frame:SetScript("OnEvent", function(self, _, name)
     SilentHorsemanDB = SilentHorsemanDB or { audio = true, chat = true }
     DB = SilentHorsemanDB
     ApplyAudio()
+    for _, event in ipairs(DEBUG_EVENTS) do
+        debugFrame:RegisterEvent(event)
+    end
     self:UnregisterEvent("ADDON_LOADED")
 end)
