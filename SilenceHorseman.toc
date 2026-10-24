@@ -6,6 +6,7 @@
 ## IconTexture: Interface\AddOns\SilenceHorseman\icon
 ## X-License: MIT
 ## X-Website: https://github.com/gameforce/SilenceHorseman
+## X-Curse-Project-ID: 1763540
 ## SavedVariables: SilenceHorsemanDB
 
 SilenceHorseman.lua
