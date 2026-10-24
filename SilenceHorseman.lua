@@ -1,5 +1,5 @@
--- Silent Horseman: two independent options, mute the Horseman's voice lines and hide his chat yells.
--- /sh opens the options; /sh audio on|off and /sh chat on|off change them from chat.
+-- Silence Horseman: two independent options, mute the Horseman's voice lines and hide his chat yells.
+-- /shh opens the options; /shh audio on|off and /shh chat on|off change them from chat.
 
 local ADDON = ...
 local DB
@@ -23,7 +23,7 @@ local SPEAKER = "Horseman"
 local CHAT_EVENTS = { "CHAT_MSG_MONSTER_YELL", "CHAT_MSG_MONSTER_SAY", "CHAT_MSG_MONSTER_EMOTE" }
 
 local function Print(msg)
-    print("|cffff8000Silent Horseman:|r " .. msg)
+    print("|cffff8000Silence Horseman:|r " .. msg)
 end
 
 ---------------------------------------------------------------- Audio
@@ -58,7 +58,7 @@ for _, event in ipairs(CHAT_EVENTS) do
     ChatFrame_AddMessageEventFilter(event, ChatFilter)
 end
 
--- /sh debug on: one line per NPC yell, say or emote (and boss emote) seen, so the real event name, the speaker's
+-- /shh debug on: one line per NPC yell, say or emote (and boss emote) seen, so the real event name, the speaker's
 -- name, whether the filter hid it and the gap since that speaker's last line can be read even with the text hidden.
 local DEBUG_EVENTS = { "CHAT_MSG_MONSTER_YELL", "CHAT_MSG_MONSTER_SAY", "CHAT_MSG_MONSTER_EMOTE",
     "CHAT_MSG_RAID_BOSS_EMOTE", "CHAT_MSG_RAID_BOSS_WHISPER" }
@@ -79,11 +79,11 @@ end)
 
 ---------------------------------------------------------------- Options
 local panel = CreateFrame("Frame")
-panel.name = "Silent Horseman"
+panel.name = "Silence Horseman"
 
 local title = panel:CreateFontString(nil, "ARTWORK", "GameFontNormalLarge")
 title:SetPoint("TOPLEFT", 16, -16)
-title:SetText("Silent Horseman")
+title:SetText("Silence Horseman")
 
 local function CheckBox(key, label, note, y)
     local box = CreateFrame("CheckButton", nil, panel, "UICheckButtonTemplate")
@@ -129,12 +129,12 @@ end
 
 ---------------------------------------------------------------- Slash command
 local function Status()
-    Print(("voice lines %s, chat text %s, debug %s. /sh audio on|off, /sh chat on|off, /sh debug on|off, /sh opens the options."):format(
+    Print(("voice lines %s, chat text %s, debug %s. /shh audio on|off, /shh chat on|off, /shh debug on|off, /shh opens the options."):format(
         DB.audio and "muted" or "audible", DB.chat and "hidden" or "shown", DB.debug and "on" or "off"))
 end
 
-SLASH_SILENTHORSEMAN1, SLASH_SILENTHORSEMAN2 = "/sh", "/silenthorseman"
-SlashCmdList.SILENTHORSEMAN = function(msg)
+SLASH_SILENCEHORSEMAN1, SLASH_SILENCEHORSEMAN2 = "/shh", "/silencehorseman"
+SlashCmdList.SILENCEHORSEMAN = function(msg)
     local key, arg = strsplit(" ", strlower(strtrim(msg or "")))
     if (key == "audio" or key == "chat" or key == "debug") and (arg == "on" or arg == "off") then
         DB[key] = arg == "on"
@@ -153,8 +153,8 @@ frame:SetScript("OnEvent", function(self, _, name)
     if name ~= ADDON then
         return
     end
-    SilentHorsemanDB = SilentHorsemanDB or { audio = true, chat = true }
-    DB = SilentHorsemanDB
+    SilenceHorsemanDB = SilenceHorsemanDB or { audio = true, chat = true }
+    DB = SilenceHorsemanDB
     ApplyAudio()
     for _, event in ipairs(DEBUG_EVENTS) do
         debugFrame:RegisterEvent(event)
